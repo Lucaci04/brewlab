@@ -1,8 +1,29 @@
 # BREWLAB
 
+![Prima pagină, desktop](docs/screenshots/acasa-desktop.jpg)
+
 Site de prezentare pentru o cafenea de specialitate.
 
 > Proiect demonstrativ. Firma, adresa, telefoanele, emailurile și recenziile sunt fictive. Orice asemănare cu o firmă reală este întâmplătoare.
+
+## Capturi de ecran
+
+| Prima pagină, telefon | Meniul pe telefon |
+|---|---|
+| <img src="docs/screenshots/acasa-mobil.jpg" alt="Prima pagină, telefon" width="220"> | <img src="docs/screenshots/meniu-mobil.jpg" alt="Meniul pe telefon" width="220"> |
+
+## Tehnologii
+
+O singură pagină HTML, cu Tailwind CSS și JavaScript simplu.
+
+## Decizii tehnice
+
+- Meniul are filtre pe categorii, iar comanda la pachet se pregătește într-un coș salvat în localStorage.
+- Comanda și rezervarea se trimit pe WhatsApp, cu mesaj precompletat.
+- Animațiile se opresc cu „prefers-reduced-motion”.
+- Accesibilitate: mesaje anunțate cititoarelor de ecran (aria-live), focus vizibil la navigarea cu tastatura.
+- Animațiile se reduc sau se opresc pentru cine a setat „reducerea mișcării” în sistem (`prefers-reduced-motion`).
+- Imaginile din afara ecranului se încarcă abia când e nevoie de ele (`loading="lazy"`).
 
 ## Rulare
 
