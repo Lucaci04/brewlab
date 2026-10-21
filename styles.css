@@ -1,0 +1,199 @@
+/* ==========================================================================
+   BREWLAB CONSTANȚA — DESIGN SYSTEM SIMPLIFICAT & ELEGANT
+   Conform cafe-brand-design, cafe-ui-implementation & cerințelor de simplitate
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Paletă strictă de 3 culori de bază */
+  --color-bg: #FAF7F2;          /* Crem cald pentru fundal */
+  --color-surface: #FFFFFF;     /* Suprafață carduri / panouri */
+  --color-surface-soft: #F2ECE1;/* Crem secundar / borduri subtile */
+  --color-text: #211510;        /* Espresso închis pentru text principal */
+  --color-text-muted: #5C4E46;  /* Text secundar (contrast accesibil > 4.5:1) */
+  --color-accent: #A84D2B;      /* Teracotă caldă pentru acțiuni și butoane */
+  --color-accent-hover: #8E3E20;/* Teracotă închisă la hover */
+  --color-border: #E5DCCE;      /* Linii de separație discrete */
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Tipografie lizibilă (fără fonturi decorative sau condensate) */
+h1, h2, h3, h4 {
+  color: var(--color-text);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-top: 0;
+  letter-spacing: -0.015em;
+}
+
+p {
+  color: var(--color-text-muted);
+  font-size: 1rem; /* 16px */
+  line-height: 1.6;
+  margin-top: 0;
+}
+
+/* Dimensiune minimă text: 14px */
+.text-legal, small, .text-xs {
+  font-size: 0.875rem !important; /* 14px */
+  line-height: 1.5;
+}
+
+/* Focus vizibil pentru accesibilitate la navigare cu tastatura */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* Butoane primare și secundare (înălțime minimă 48px pentru atingere comodă) */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-accent);
+  color: #FFFFFF !important;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-accent-hover);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0.75rem 1.5rem;
+  background-color: transparent;
+  color: var(--color-text) !important;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  border: 1.5px solid var(--color-border);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-surface-soft);
+  border-color: var(--color-accent);
+}
+
+/* Buton activ categorii */
+.tab-btn {
+  min-height: 44px;
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+  background: var(--color-accent);
+  color: #FFFFFF;
+  border-color: var(--color-accent);
+}
+
+/* Bară acțiuni discretă pe mobil (Bottom Bar) */
+.mobile-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  background-color: rgba(250, 247, 242, 0.96);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid var(--color-border);
+  padding: 0.65rem 1rem;
+  padding-bottom: max(0.65rem, env(safe-area-inset-bottom));
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* Spațiu la finalul paginii pe mobil pentru a nu acoperi conținutul cu bara de acțiuni */
+@media (max-width: 768px) {
+  .has-mobile-bar {
+    padding-bottom: 5.5rem;
+  }
+}
+
+/* Suport prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Panou Drawer / Modal */
+.modal-overlay {
+  background-color: rgba(33, 21, 16, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Scrollbar discret */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(33, 21, 16, 0.15);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(168, 77, 43, 0.4);
+}

@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BREWLAB — Cafea de Specialitate în Centrul Constanței</title>
+  
+  <!-- Inline SVG Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            creamBg: '#FAF7F2',
+            espressoDark: '#211510',
+            espressoMuted: '#5C4E46',
+            terracotta: '#A84D2B',
+            terracottaHover: '#8E3E20',
+            borderLine: '#E5DCCE'
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#FAF7F2] text-[#211510] has-mobile-bar">
+
+  <!-- ================= HEADER / NAVIGAȚIE ================= -->
+  <header class="sticky top-0 z-30 bg-[#FAF7F2]/95 backdrop-blur-md border-b border-[#E5DCCE]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Name -->
+      <a href="#" class="flex flex-col text-left group">
+        <span class="text-xl sm:text-2xl font-bold tracking-tight text-[#211510] group-hover:text-[#A84D2B] transition-colors">
+          BREWLAB
+        </span>
+        <span class="text-xs text-[#5C4E46] font-medium">
+          Cafenea • Centrul Constanței
+        </span>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden md:flex items-center gap-7 text-sm font-semibold text-[#5C4E46]">
+        <a href="#meniu" class="hover:text-[#A84D2B] transition-colors">Meniu</a>
+        <a href="#ridicare" class="hover:text-[#A84D2B] transition-colors">Comandă cu ridicare</a>
+        <a href="#rezervare" class="hover:text-[#A84D2B] transition-colors">Rezervă masă</a>
+        <a href="#vizita" class="hover:text-[#A84D2B] transition-colors">Locație & Program</a>
+      </nav>
+
+      <!-- Desktop Actions -->
+      <div class="flex items-center gap-3">
+        <!-- Coș / Comandă Ridicare -->
+        <button 
+          onclick="toggleCartDrawer(true)"
+          class="relative inline-flex items-center gap-2 h-11 px-4 rounded-full bg-white border border-[#E5DCCE] hover:border-[#A84D2B] text-sm font-semibold text-[#211510] transition-colors cursor-pointer"
+          aria-label="Deschide lista de comandă pentru ridicare">
+          <svg class="w-4 h-4 text-[#A84D2B]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+          </svg>
+          <span class="hidden sm:inline">Ridicare</span>
+          <span class="cart-counter-badge hidden bg-[#A84D2B] text-white text-xs font-bold px-2 py-0.5 rounded-full">
+            0
+          </span>
+        </button>
+
+        <!-- Buton Rezervă Masă (Desktop) -->
+        <button 
+          onclick="openReservationModal()"
+          class="hidden sm:inline-flex btn-primary !min-h-[44px] !py-2 !px-5 !text-sm">
+          Rezervă masă
+        </button>
+
+        <!-- Buton Meniu Mobil -->
+        <button 
+          id="btn-mobile-menu"
+          onclick="toggleMobileMenu()"
+          class="md:hidden w-11 h-11 rounded-full border border-[#E5DCCE] bg-white flex items-center justify-center text-[#211510] cursor-pointer"
+          aria-label="Meniu principal"
+          aria-expanded="false">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Panou Mobil Navigație -->
+    <div id="mobile-nav-panel" class="hidden md:hidden bg-white border-b border-[#E5DCCE] px-6 py-4 space-y-3 text-base font-semibold">
+      <a href="#meniu" onclick="toggleMobileMenu()" class="block py-1 text-[#211510] hover:text-[#A84D2B]">Meniu</a>
+      <a href="#ridicare" onclick="toggleMobileMenu()" class="block py-1 text-[#211510] hover:text-[#A84D2B]">Comandă cu ridicare</a>
+      <a href="#rezervare" onclick="toggleMobileMenu()" class="block py-1 text-[#211510] hover:text-[#A84D2B]">Rezervă o masă</a>
+      <a href="#vizita" onclick="toggleMobileMenu()" class="block py-1 text-[#211510] hover:text-[#A84D2B]">Locație & Program</a>
+      <div class="pt-2 border-t border-[#E5DCCE] flex flex-col gap-2">
+        <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="btn-secondary !text-sm !w-full">
+          Deschide în Google Maps ↗
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ================= 1. SECȚIUNEA HERO ================= -->
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        
+        <!-- Text & Acțiuni -->
+        <div class="lg:col-span-7 space-y-5 text-left">
+          
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#F2ECE1] border border-[#E5DCCE] text-xs font-semibold text-[#5C4E46]">
+            <span>📍 Centrul Constanței</span>
+            <span>•</span>
+            <span>Cafea de specialitate</span>
+          </div>
+
+          <!-- Titlu scurt conform cerinței (32-40px mobil, 48-60px desktop) -->
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#211510] leading-tight tracking-tight">
+            Cafea de specialitate în centrul Constanței.
+          </h1>
+
+          <!-- O singură propoziție clară despre cafenea -->
+          <p class="text-base sm:text-lg text-[#5C4E46] leading-relaxed max-w-xl">
+            Boabe proaspăt prăjite, preparate atent la filtru sau espresso și produse de patiserie artizanală, la doar câteva minute de faleză.
+          </p>
+
+          <!-- Cel mult două acțiuni principale conform cerinței -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
+            <a href="#meniu" class="btn-primary">
+              Vezi meniul
+            </a>
+            <a href="#vizita" class="btn-secondary">
+              Cum ajungi
+            </a>
+          </div>
+
+          <!-- Bandă rapidă de vizită: Buton Google Maps ușor de găsit devreme -->
+          <div class="pt-5 border-t border-[#E5DCCE] flex flex-wrap items-center justify-between gap-3 text-sm text-[#5C4E46]">
+            <div>
+              <strong class="text-[#211510] block sm:inline">Adresă demo:</strong>
+              <span>[De completat: Numele străzii, Centrul Vechi, Constanța]</span>
+            </div>
+            <a 
+              href="https://maps.google.com" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="inline-flex items-center gap-1 font-semibold text-[#A84D2B] hover:underline">
+              <span>Deschide în Google Maps</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+
+        </div>
+
+        <!-- Imagine Autentică din Proiect (Curată, fără video, fără umbre grele) -->
+        <div class="lg:col-span-5">
+          <div class="rounded-3xl overflow-hidden border border-[#E5DCCE] bg-white shadow-sm aspect-[4/3] sm:aspect-[5/4]">
+            <img 
+              src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80" 
+              alt="Cești de cafea de specialitate la cafeneaua BREWLAB din Constanța" 
+              loading="eager"
+              class="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= 2. SECȚIUNEA MENIU ================= -->
+    <section id="meniu" class="py-14 sm:py-20 bg-white border-y border-[#E5DCCE]">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="max-w-2xl mx-auto text-center mb-8">
+          <h2 class="text-2xl sm:text-3xl font-bold text-[#211510] mb-2">
+            Meniul cafenelei
+          </h2>
+          <p class="text-base text-[#5C4E46]">
+            Rețete simple preparate pe loc. Prețurile sunt exprimate în lei și includ TVA.
+          </p>
+        </div>
+
+        <!-- Butoane Categorii (Curate, orizontale pe mobil fără aglomerare) -->
+        <div class="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-3 mb-8 no-scrollbar" role="tablist" aria-label="Categorii meniu">
+          <button onclick="filterCategory('all')" data-category="all" role="tab" aria-selected="true" class="tab-btn active">
+            Toate produsele
+          </button>
+          <button onclick="filterCategory('espresso')" data-category="espresso" role="tab" aria-selected="false" class="tab-btn">
+            Espresso & Lapte
+          </button>
+          <button onclick="filterCategory('filtru')" data-category="filtru" role="tab" aria-selected="false" class="tab-btn">
+            Filtru & Origini
+          </button>
+          <button onclick="filterCategory('rece')" data-category="rece" role="tab" aria-selected="false" class="tab-btn">
+            Rece & Cold Brew
+          </button>
+          <button onclick="filterCategory('patiserie')" data-category="patiserie" role="tab" aria-selected="false" class="tab-btn">
+            Patiserie & Toast
+          </button>
+        </div>
+
+        <!-- Lista de produse (Generată dinamic) -->
+        <div id="menu-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+          <!-- Rendered by app.js -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= 3. COMANDĂ PENTRU RIDICARE (FLUX CLAR & TRANSPARENT) ================= -->
+    <section id="ridicare" class="py-14 sm:py-20 bg-[#FAF7F2]">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="bg-white rounded-3xl p-6 sm:p-10 border border-[#E5DCCE] shadow-sm">
+          <div class="text-left mb-8">
+            <span class="text-xs font-bold uppercase tracking-wider text-[#A84D2B]">Fără timp pierdut la coadă</span>
+            <h2 class="text-2xl sm:text-3xl font-bold text-[#211510] mt-1 mb-2">
+              Comandă cu ridicare din cafenea
+            </h2>
+            <p class="text-base text-[#5C4E46]">
+              Treci în drum spre birou sau spre faleză? Îți pregătim băutura exact când dorești.
+            </p>
+          </div>
+
+          <!-- 3 Pași Explicați Limpede conform cerinței -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8 border-y border-[#E5DCCE] py-6">
+            <div>
+              <div class="w-8 h-8 rounded-full bg-[#FAF7F2] border border-[#E5DCCE] text-sm font-bold text-[#A84D2B] flex items-center justify-center mb-2">
+                1
+              </div>
+              <h3 class="text-base font-bold text-[#211510] mb-1">Alegi produsele</h3>
+              <p class="text-sm text-[#5C4E46]">Selectează cafeaua și preparatele dorite direct din meniu.</p>
+            </div>
+
+            <div>
+              <div class="w-8 h-8 rounded-full bg-[#FAF7F2] border border-[#E5DCCE] text-sm font-bold text-[#A84D2B] flex items-center justify-center mb-2">
+                2
+              </div>
+              <h3 class="text-base font-bold text-[#211510] mb-1">Trimiți comanda</h3>
+              <p class="text-sm text-[#5C4E46]">Mesaj rapid pe WhatsApp cu lista gata completată sau apel direct.</p>
+            </div>
+
+            <div>
+              <div class="w-8 h-8 rounded-full bg-[#FAF7F2] border border-[#E5DCCE] text-sm font-bold text-[#A84D2B] flex items-center justify-center mb-2">
+                3
+              </div>
+              <h3 class="text-base font-bold text-[#211510] mb-1">Ridicarea din cafenea</h3>
+              <p class="text-sm text-[#5C4E46]">Produsele sunt proaspăt făcute și te așteaptă la bar.</p>
+            </div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+            <button onclick="toggleCartDrawer(true)" class="btn-primary">
+              Vezi lista ta de ridicare
+            </button>
+            <a href="tel:0700000000" class="btn-secondary !text-sm">
+              📞 Comandă telefonic: [De completat: 07xx xxx xxx]
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= 4. REZERVARE MASĂ ================= -->
+    <section id="rezervare" class="py-14 sm:py-20 bg-white border-t border-[#E5DCCE]">
+      <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center mb-8">
+          <span class="text-xs font-bold uppercase tracking-wider text-[#A84D2B]">Mese în interior sau pe terasă</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-[#211510] mt-1 mb-2">
+            Rezervă o masă
+          </h2>
+          <p class="text-base text-[#5C4E46]">
+            Completează detaliile mai jos. Te vom contacta telefonic pentru a confirma disponibilitatea.
+          </p>
+        </div>
+
+        <form id="reservation-form" class="bg-[#FAF7F2] p-6 sm:p-8 rounded-3xl border border-[#E5DCCE] space-y-4">
+          <div>
+            <label for="res-name" class="block text-sm font-bold text-[#211510] mb-1">Nume și prenume</label>
+            <input 
+              id="res-name" 
+              type="text" 
+              required 
+              placeholder="Ex: Andrei Radu" 
+              class="w-full h-12 px-4 bg-white border border-[#E5DCCE] rounded-xl text-base text-[#211510] focus:border-[#A84D2B]"
+            />
+          </div>
+
+          <div>
+            <label for="res-phone" class="block text-sm font-bold text-[#211510] mb-1">Număr de telefon</label>
+            <input 
+              id="res-phone" 
+              type="tel" 
+              required 
+              placeholder="07xx xxx xxx" 
+              class="w-full h-12 px-4 bg-white border border-[#E5DCCE] rounded-xl text-base text-[#211510] focus:border-[#A84D2B]"
+            />
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label for="res-date" class="block text-sm font-bold text-[#211510] mb-1">Data</label>
+              <input 
+                id="res-date" 
+                type="date" 
+                required 
+                class="w-full h-12 px-3 bg-white border border-[#E5DCCE] rounded-xl text-base text-[#211510] focus:border-[#A84D2B]"
+              />
+            </div>
+            <div>
+              <label for="res-time" class="block text-sm font-bold text-[#211510] mb-1">Ora</label>
+              <select id="res-time" class="w-full h-12 px-3 bg-white border border-[#E5DCCE] rounded-xl text-base text-[#211510] focus:border-[#A84D2B]">
+                <option value="08:30">08:30</option>
+                <option value="10:00">10:00</option>
+                <option value="12:00">12:00</option>
+                <option value="14:00">14:00</option>
+                <option value="16:00" selected>16:00</option>
+                <option value="18:00">18:00</option>
+              </select>
+            </div>
+            <div>
+              <label for="res-guests" class="block text-sm font-bold text-[#211510] mb-1">Persoane</label>
+              <select id="res-guests" class="w-full h-12 px-3 bg-white border border-[#E5DCCE] rounded-xl text-base text-[#211510] focus:border-[#A84D2B]">
+                <option value="1">1 persoană</option>
+                <option value="2" selected>2 persoane</option>
+                <option value="3">3 persoane</option>
+                <option value="4">4 persoane</option>
+                <option value="5-8">Grup (5-8 pers)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <button type="submit" class="btn-primary w-full">
+              Trimite solicitarea de rezervare
+            </button>
+            <p class="text-legal text-[#5C4E46] text-center mt-2.5">
+              Notă: Rezervarea nu este confirmată automat. Te vom suna în cel mai scurt timp pentru validare.
+            </p>
+          </div>
+
+          <!-- Rezultat / Confirmare sinceră -->
+          <div id="reservation-response" class="hidden pt-2"></div>
+        </form>
+
+      </div>
+    </section>
+
+    <!-- ================= 5. INFORMAȚII DE VIZITĂ & PROGRAM ================= -->
+    <section id="vizita" class="py-14 sm:py-20 bg-[#FAF7F2] border-t border-[#E5DCCE]">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+          
+          <!-- Detalii clare de contact & vizită -->
+          <div class="space-y-6">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-[#A84D2B]">Unde ne găsești</span>
+              <h2 class="text-2xl sm:text-3xl font-bold text-[#211510] mt-1 mb-2">
+                Informații de vizită
+              </h2>
+              <p class="text-base text-[#5C4E46]">
+                Suntem situați în zona centrală a Constanței, ușor accesibil atât pe jos dinspre faleză, cât și cu transportul în comun.
+              </p>
+            </div>
+
+            <div class="space-y-4">
+              <!-- Adresă -->
+              <div class="p-5 bg-white rounded-2xl border border-[#E5DCCE]">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-[#5C4E46] mb-1">Adresă</h3>
+                <p class="text-base font-semibold text-[#211510] mb-0.5">
+                  [De completat: Numele străzii și numărul, Centrul Vechi, Constanța]
+                </p>
+                <p class="text-sm text-[#5C4E46]">Reper: În apropiere de Piața Ovidiu / Faleza Cazinoului</p>
+              </div>
+
+              <!-- Program -->
+              <div class="p-5 bg-white rounded-2xl border border-[#E5DCCE]">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-[#5C4E46] mb-2">Program de funcționare</h3>
+                <div class="flex justify-between py-1 text-sm border-b border-[#E5DCCE]">
+                  <span class="text-[#5C4E46]">Luni – Vineri:</span>
+                  <span class="font-bold text-[#211510]">[De completat: 07:30 – 19:00]</span>
+                </div>
+                <div class="flex justify-between py-1 text-sm pt-2">
+                  <span class="text-[#5C4E46]">Sâmbătă – Duminică:</span>
+                  <span class="font-bold text-[#211510]">[De completat: 08:30 – 20:00]</span>
+                </div>
+              </div>
+
+              <!-- Telefon -->
+              <div class="p-5 bg-white rounded-2xl border border-[#E5DCCE]">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-[#5C4E46] mb-1">Telefon direct</h3>
+                <a href="tel:0700000000" class="text-base font-bold text-[#A84D2B] hover:underline">
+                  [De completat: 07xx xxx xxx]
+                </a>
+              </div>
+            </div>
+
+            <!-- Buton Google Maps vizibil și comod -->
+            <div>
+              <a 
+                href="https://maps.google.com" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="btn-primary w-full sm:w-auto">
+                <span>Deschide în Google Maps</span>
+                <span class="ml-1" aria-hidden="true">↗</span>
+              </a>
+            </div>
+
+          </div>
+
+          <!-- Hartă / Imagine locație din Constanța -->
+          <div class="rounded-3xl overflow-hidden border border-[#E5DCCE] bg-white shadow-sm h-80 sm:h-96 relative">
+            <img 
+              src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=900&q=80" 
+              alt="Harta locației cafenelei în Constanța" 
+              loading="lazy"
+              class="w-full h-full object-cover filter contrast-105"
+            />
+            <div class="absolute inset-0 bg-[#211510]/30 flex flex-col items-center justify-center p-6 text-center text-white">
+              <span class="text-3xl mb-2" aria-hidden="true">📍</span>
+              <p class="font-bold text-lg text-white">BREWLAB Constanța</p>
+              <p class="text-sm text-stone-200 mb-4">[Locație de completat în Centrul Vechi]</p>
+              <a 
+                href="https://maps.google.com" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="px-5 py-2.5 rounded-full bg-white text-[#211510] text-sm font-bold hover:bg-[#A84D2B] hover:text-white transition-colors">
+                Deschide traseul în Google Maps ↗
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= 6. RECENZII EXISTENTE (SPRE FINAL) ================= -->
+    <section class="py-14 sm:py-16 bg-white border-t border-[#E5DCCE]">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-xl mx-auto mb-10">
+          <span class="text-xs font-bold uppercase tracking-wider text-[#A84D2B]">Comunitate</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-[#211510] mt-1 mb-2">
+            Ce spun oaspeții noștri
+          </h2>
+          <p class="text-legal text-[#5C4E46]">
+            Opinii demonstrative furnizate în proiect. Se vor actualiza cu recenziile reale Google.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="p-6 bg-[#FAF7F2] rounded-2xl border border-[#E5DCCE] flex flex-col justify-between">
+            <p class="text-sm text-[#211510] italic leading-relaxed mb-4">
+              „Cafea excelentă în drum spre faleză. Flat white-ul are exact textura pe care o cauți la o prăjitorie de specialitate.”
+            </p>
+            <div class="pt-3 border-t border-[#E5DCCE] text-xs font-bold text-[#5C4E46]">
+              Andreea M. — Oaspete local (Constanța)
+            </div>
+          </div>
+
+          <div class="p-6 bg-[#FAF7F2] rounded-2xl border border-[#E5DCCE] flex flex-col justify-between">
+            <p class="text-sm text-[#211510] italic leading-relaxed mb-4">
+              „Un loc liniștit în centru, potrivit pentru 30 de minute de lectură sau o întâlnire scurtă. Croissantul a fost proaspăt.”
+            </p>
+            <div class="pt-3 border-t border-[#E5DCCE] text-xs font-bold text-[#5C4E46]">
+              Radu P. — Client recurent
+            </div>
+          </div>
+
+          <div class="p-6 bg-[#FAF7F2] rounded-2xl border border-[#E5DCCE] flex flex-col justify-between">
+            <p class="text-sm text-[#211510] italic leading-relaxed mb-4">
+              „Personal amabil, explică răbdător diferențele dintre origini. Opțiunea de comandă pentru ridicare e foarte utilă dimineața.”
+            </p>
+            <div class="pt-3 border-t border-[#E5DCCE] text-xs font-bold text-[#5C4E46]">
+              Elena V. — Oaspete
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-[#211510] text-stone-300 text-sm py-12 border-t border-stone-800">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
+      <div>
+        <p class="font-bold text-lg text-white">BREWLAB Constanța</p>
+        <p class="text-xs text-stone-400 mt-1">Cafenea de specialitate • Centrul Vechi, Constanța</p>
+      </div>
+
+      <div class="flex items-center gap-6 text-xs text-stone-300">
+        <a href="#meniu" class="hover:text-white transition-colors">Meniu</a>
+        <a href="#ridicare" class="hover:text-white transition-colors">Ridicare</a>
+        <a href="#rezervare" class="hover:text-white transition-colors">Rezervări</a>
+        <a href="#vizita" class="hover:text-white transition-colors">Locație & Program</a>
+      </div>
+
+      <div class="text-legal text-stone-500">
+        &copy; 2026 BREWLAB. Pagină demo de prezentare.
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= BARA DISCRETĂ PE MOBIL (BOTTOM BAR) ================= -->
+  <div class="md:hidden mobile-bottom-bar" role="navigation" aria-label="Acțiuni rapide mobil">
+    <button 
+      onclick="toggleCartDrawer(true)" 
+      class="btn-primary flex-1 !min-h-[48px] !text-sm !px-3 shadow-md">
+      Comandă cu ridicare
+    </button>
+    <button 
+      onclick="openReservationModal()" 
+      class="btn-secondary flex-1 !min-h-[48px] !text-sm !px-3 bg-white">
+      Rezervă o masă
+    </button>
+  </div>
+
+  <!-- ================= DRAWER COȘ RIDICARE (WHATSAPP / TELEFON) ================= -->
+  <div id="cart-drawer" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-label="Comandă pentru ridicare" aria-hidden="true">
+    <div onclick="toggleCartDrawer(false)" class="modal-overlay fixed inset-0 cursor-pointer"></div>
+
+    <div id="cart-panel" class="fixed right-0 top-0 bottom-0 w-full max-w-md bg-white shadow-2xl flex flex-col transition-transform duration-300 translate-x-full z-10">
+      
+      <!-- Header Drawer -->
+      <div class="p-5 border-b border-[#E5DCCE] flex items-center justify-between bg-[#FAF7F2]">
+        <div>
+          <h2 class="text-lg font-bold text-[#211510]">Comandă pentru ridicare</h2>
+          <p class="text-xs text-[#5C4E46]">Produse selectate din meniu</p>
+        </div>
+        <button onclick="toggleCartDrawer(false)" class="w-9 h-9 rounded-full bg-white border border-[#E5DCCE] flex items-center justify-center text-[#211510] hover:text-[#A84D2B] cursor-pointer" aria-label="Închide lista">
+          ✕
+        </button>
+      </div>
+
+      <!-- Conținut listă -->
+      <div class="flex-1 overflow-y-auto p-5 space-y-3">
+        <div id="cart-empty-state" class="text-center py-16 text-[#5C4E46]">
+          <span class="text-4xl block mb-2" aria-hidden="true">☕</span>
+          <p class="font-bold text-[#211510]">Nu ai adăugat încă produse.</p>
+          <p class="text-sm mt-1">Alege din meniu produsele pe care dorești să le ridici din cafenea.</p>
+        </div>
+        <div id="cart-items-list" class="space-y-2.5"></div>
+      </div>
+
+      <!-- Acțiuni trimitere comandă -->
+      <div id="cart-footer-actions" class="hidden p-5 border-t border-[#E5DCCE] bg-[#FAF7F2] space-y-3">
+        <div class="flex justify-between items-baseline text-base font-bold text-[#211510]">
+          <span>Total estimat:</span>
+          <span id="cart-subtotal-val" class="text-[#A84D2B] text-lg">0 Lei</span>
+        </div>
+
+        <p class="text-legal text-[#5C4E46]">
+          Alege cum dorești să transmiți comanda către barista:
+        </p>
+
+        <!-- Buton WhatsApp cu mesaj precompletat -->
+        <a 
+          id="btn-order-whatsapp" 
+          href="#" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="btn-primary w-full !bg-[#1E7E34] hover:!bg-[#155D27] flex items-center justify-center gap-2">
+          <span>Trimite comanda pe WhatsApp</span>
+          <span aria-hidden="true">↗</span>
+        </a>
+
+        <!-- Buton Apel telefonic -->
+        <a 
+          href="tel:0700000000" 
+          class="btn-secondary w-full text-center">
+          Sună la cafenea: [De completat numărul]
+        </a>
+
+        <p class="text-legal text-[#5C4E46] text-center text-xs">
+          Comanda va fi confirmată direct cu barista de serviciu.
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= MODAL REZERVARE MASĂ ================= -->
+  <div id="reservation-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Formular rezervare masă" aria-hidden="true">
+    <div onclick="closeReservationModal()" class="modal-overlay fixed inset-0 cursor-pointer"></div>
+
+    <div class="relative bg-white rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden border border-[#E5DCCE] z-10">
+      
+      <div class="p-6 bg-[#FAF7F2] border-b border-[#E5DCCE] flex items-center justify-between">
+        <div>
+          <h2 class="text-xl font-bold text-[#211510]">Rezervă o masă</h2>
+          <p class="text-xs text-[#5C4E46]">BREWLAB Constanța</p>
+        </div>
+        <button onclick="closeReservationModal()" class="w-9 h-9 rounded-full bg-white border border-[#E5DCCE] flex items-center justify-center text-[#211510] hover:text-[#A84D2B] cursor-pointer" aria-label="Închide fereastra">
+          ✕
+        </button>
+      </div>
+
+      <div class="p-6">
+        <p class="text-sm text-[#5C4E46] mb-4">
+          Pentru rezervări rapide sau mese de grup, ne poți apela și direct la <a href="tel:0700000000" class="font-bold text-[#A84D2B] underline">[07xx xxx xxx]</a>.
+        </p>
+
+        <a href="#rezervare" onclick="closeReservationModal()" class="btn-primary w-full text-center">
+          Completează formularul pe pagină
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Container Notificări Toast -->
+  <div id="toast-container" class="fixed bottom-20 sm:bottom-6 right-4 z-50 flex flex-col gap-2 pointer-events-none" aria-live="polite"></div>
+
+  <!-- Script Principal -->
+  <script src="app.js"></script>
+</body>
+</html>
